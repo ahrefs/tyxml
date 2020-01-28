@@ -15,6 +15,14 @@
  (package tyxml-ppx)
 )
 
+(test
+ (name test_jsx)
+ (modules test_jsx)
+ (libraries tyxml alcotest)
+ (preprocess (pps tyxml-jsx))
+ (package tyxml-jsx)
+)
+
 ;; Toplevel ppx tests
 ;; WIP this test is temporarily disable, waiting for proper support for
 ;; toplevel tests in dune.

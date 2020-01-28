@@ -118,7 +118,7 @@ let basics = (
         "let fun",
         [
           {
-            let%html f = x => "<p>"(x, "</p>");
+            let f = x => <p> x </p>;
             f([a([])]);
           },
         ],
@@ -227,7 +227,7 @@ let attribs = (
       ),
       (
         "aria attributes",
-        [[%html "<div aria-hidden=true></div>"]],
+        [[<div ariaHidden=true />]],
         [div(~a=[a_aria("hidden", ["true"])], [])],
       ),
       (
@@ -511,45 +511,40 @@ let antiquot = {
   (
     "ppx antiquot",
     HtmlWrappedTests.make(
-      Html.
-        [
-          ("child", !:[<p> elt1 () </p>], !:p(elt1())),
-          ("list child", !:[<p> elt2 () </p>], !:p(elt2())),
-          (
-            "children",
-            !:[<p> bar elt1 () "foo" elt2 () baz </p>],
-            !:
-              p(
-                txt("bar"^)
-                @: elt1()
-                @- txt("foo"^)
-                @: elt2()
-                @- txt("baz"^)
-                @: nil(),
-              ),
-          ),
-          (
-            "insertion",
-            !:[<p> <em> elt1 () </em> </p>],
-            !:p(!:em(elt1())),
-          ),
-          (
-            "attrib",
-            !:[<p id> bla </p>],
-            !:p(~a=[a_id(id)], !:txt("bla"^)),
-          ),
-          ("first child", [(elt1())(<p />)], elt1() @- p(nil()) @: nil()),
-          ("last child", [<> <p /> {elt1()} </>], p(nil()) @: elt1()),
-          (
-            "wrapped functions",
-            !:[<input method=`Get />],
-            !:input(~a=[a_method(`Get^)], ()),
-          ),
-        ],
-        /* should succeed */
-        /* "escape", */
-        /* [%tyxml "<p>(tyxml4)</p>"], */
-        /* [p [txt "(tyxml4)"]]; */
+      Html.[
+        ("child", !:[<p> elt1 () </p>], !:p(elt1())),
+        ("list child", !:[<p> elt2 () </p>], !:p(elt2())),
+        (
+          "children",
+          !:[<p> bar elt1 () "foo" elt2 () baz </p>],
+          !:
+            p(
+              txt("bar"^)
+              @: elt1()
+              @- txt("foo"^)
+              @: elt2()
+              @- txt("baz"^)
+              @: nil(),
+            ),
+        ),
+        ("insertion", !:[<p> <em> elt1 () </em> </p>], !:p(!:em(elt1()))),
+        (
+          "attrib",
+          !:[<p id> bla </p>],
+          !:p(~a=[a_id(id)], !:txt("bla"^)),
+        ),
+        ("first child", [(elt1())(<p />)], elt1() @- p(nil()) @: nil()),
+        ("last child", [<> <p /> {elt1()} </>], p(nil()) @: elt1()),
+        (
+          "wrapped functions",
+          !:[<input method=`Get />],
+          !:input(~a=[a_method(`Get^)], ()),
+        ),
+      ],
+      /* should succeed */
+      /* "escape", */
+      /* [%tyxml "<p>(tyxml4)</p>"], */
+      /* [p [txt "(tyxml4)"]]; */
     ),
   );
 };
